@@ -15,12 +15,12 @@ if(moneda == "peso"){
 }
 
 while( (monto === ''|| isNaN(monto) && (moneda == "dolar")) || ((moneda == "dolar") && (monto <= 0)) || ((moneda == "dolar") && (monto > 300))){
-    alert ("Ingresá un número dentro del límite especificado");
+    alert ("Ingresá un número dentro del límite especificado entre 1 y 300 dólares");
     monto = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de 300 dolares"); 
 }
 
-while( (monto === ''|| isNaN(monto) && (moneda == "peso")) || ((moneda == "peso") && (monto <= 0)) || ((moneda == "peso") && (monto >   36300)) ){
-alert ("Ingresá un número dentro del límite especificado");
+while( (monto === ''|| isNaN(monto) && (moneda == "peso")) || ((moneda == "peso") && (monto < 121)) || ((moneda == "peso") && (monto >   36300)) ){
+alert ("Ingresá un número dentro del límite especificado entre 121 y 36300 pesos ");
 monto = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de 36300 pesos");  
 }
 
