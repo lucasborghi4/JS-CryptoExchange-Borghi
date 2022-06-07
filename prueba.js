@@ -30,7 +30,7 @@ if (moneda == "peso") {
 }
 
 if (moneda == "dolar") {
-    alert ("Usted tiene " + monto + " para transaccionar");
+    alert ("Usted tiene " + monto + " dolares para transaccionar");
 }
 
 let crypto = prompt ("¿Que crypto desea comprar? Elija entre BTC o ETH");
