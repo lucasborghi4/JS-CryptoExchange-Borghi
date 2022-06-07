@@ -19,7 +19,7 @@ while( (monto === ''|| isNaN(monto) && (moneda == "dolar")) || ((moneda == "dola
     monto = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de 300 dolares"); 
 }
 
-while( (monto === ''|| isNaN(monto) && (moneda == "pesos")) || ((moneda == "peso") && (monto <= 0)) || ((moneda == "peso") && (monto >   36300)) ){
+while( (monto === ''|| isNaN(monto) && (moneda == "peso")) || ((moneda == "peso") && (monto <= 0)) || ((moneda == "peso") && (monto >   36300)) ){
 alert ("Ingresá un número dentro del límite especificado");
 monto = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de 36300 pesos");  
 }
