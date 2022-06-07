@@ -52,7 +52,7 @@ if (crypto == "ETH") {
 }
 
 
-alert("Su transacción fue aprobada. Es la número " + Math.floor((Math.random() * 100) + 1));
+alert("Su transacción fue aprobada. Es la número " + Math.floor((Math.random() * 10000) + 1000));
 alert("Muchas Gracias por Confiar en Nosotros");
 
 
