@@ -14,22 +14,14 @@ if(moneda == "peso"){
     monto = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de 36300 pesos");
 }
 
-while( (monto === ''|| isNaN(monto) && (moneda == "dolar"))){
-    monto = prompt('Ingrese solo un número dentro del límite de 300 dolares');
-    while (((moneda == "dolar") && (monto <= 0)) || ((moneda == "dolar") && (monto > 300))) {
-
-        alert ("Ingresá un número dentro del límite especificado");
-        monto = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de 300 dolares");
-    }
+while( (monto === ''|| isNaN(monto) && (moneda == "dolar")) || ((moneda == "dolar") && (monto <= 0)) || ((moneda == "dolar") && (monto > 300))){
+    alert ("Ingresá un número dentro del límite especificado");
+    monto = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de 300 dolares"); 
 }
 
-while( (monto === ''|| isNaN(monto) && (moneda == "pesos"))){
-    monto = prompt('Ingrese solo un número dentro del límite de 36300 pesos');
-    while (((moneda == "peso") && (monto <= 0)) || ((moneda == "peso") && (monto >   36300))) {
-
-        alert ("Ingresá un número dentro del límite especificado");
-        monto = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de 36300 pesos");
-    }
+while( (monto === ''|| isNaN(monto) && (moneda == "pesos")) || ((moneda == "peso") && (monto <= 0)) || ((moneda == "peso") && (monto >   36300)) ){
+alert ("Ingresá un número dentro del límite especificado");
+monto = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de 36300 pesos");  
 }
 
 if (moneda == "peso") {
