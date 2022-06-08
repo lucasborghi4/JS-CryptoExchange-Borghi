@@ -2,11 +2,14 @@ alert("Hola! Bienvenido a LucExchange\nEl mejor lugar para obtener las cryptos m
 alert("Comencemos! Para realizar la operación voy a necesitar los siguientes datos");
 
 let moneda = prompt ("Ingresá el nombre de moneda con la que realizarás la operación\nPuede ser dolar o peso");
+moneda = moneda.toLowerCase();
+
 
 while ((moneda != "dolar") && (moneda != "peso")){
 
     alert("El usuario escribió una moneda diferente a dolar o peso");
     moneda = prompt ("Intentá nuevamente escribiendo el nombre de tu moneda\nPuede ser dolar o peso");
+    moneda = moneda.toLowerCase();
 }
 
 if (moneda == "dolar") {monto = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de 300 dolares");}
@@ -34,19 +37,21 @@ if (moneda == "dolar") {
 }
 
 let crypto = prompt ("¿Que crypto desea comprar? Elija entre BTC o ETH");
+crypto = crypto.toLowerCase();
 
-while ((crypto != "BTC") && (crypto != "ETH")){
+while ((crypto != "btc") && (crypto != "eth")){
 
     alert("El usuario escribió una crypto diferente a las ofrecidas");
     crypto = prompt ("Intentá nuevamente escribiendo el nombre de su crypto\nPuede ser BTC o ETH");
+    crypto = crypto.toLowerCase();
 }
 
-if (crypto == "BTC") { 
+if (crypto == "btc") { 
     comprabtc = monto / 29000;
     alert("La cotización actual del BTC es de 1 Bitcoin por 29000 dolares \n Usted podrá comprar " + comprabtc + " Bitcoin");
 }
 
-if (crypto == "ETH") { 
+if (crypto == "eth") { 
     compraeth = monto / 1700;
     alert("La cotización actual del ETH es de 1 Ethereum por 1700 dolares \n Usted podrá comprar " + compraeth + " Ethereum");
 }
