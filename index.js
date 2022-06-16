@@ -87,7 +87,6 @@ function verificarCrypto() {
 //Te dice segun tu plata y la crypto seleccionada cuanto vas a obtener
 function compraCrypto() {
     const buyCrypto = cryptos.find((el) => el.nombre === crypto)
-    console.log(buyCrypto)
     cantidad = monto / buyCrypto.precio
     cantidad = cantidad.toFixed(5)
     alert("La cotización actual del " + buyCrypto.nombre + " es de 1 " + buyCrypto.nombre + " por " + buyCrypto.precio + " dolares. \nUsted puede comprar hasta " + cantidad + " " + buyCrypto.nombre);
@@ -107,6 +106,7 @@ function verificarSeguirTransaccionando () {
     while( seguir != "si" && seguir != "no"){
         alert ("Indica si quieres seguir transaccionando escribiendo si o no")
         seguir = prompt("¿Desea seguir transaccionando? Si o No" )
+        seguir = seguir.toLowerCase();
     }
 }
 
