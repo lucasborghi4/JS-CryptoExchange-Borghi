@@ -94,7 +94,10 @@ function compraCrypto() {
 
 //verifica cantidad que queres comprar con dinero que se tiene
 function verificarTransaccion() {
-    while( (transaccion === ''|| isNaN(transaccion) || (transaccion <= 0) || (transaccion > monto))){
+    console.log(monto)
+    console.log(transaccion)
+    while( (transaccion === ''|| isNaN(transaccion) || transaccion <= 1 || transaccion > parseInt(monto))){
+        console.log()
         alert ("Ingresá un número mayor o igual a 1 y dentro de tu monto máximo de " + monto);
         transaccion = prompt ("Ingresá el monto que quieras invertir\nEl máximo es de " + monto); 
     }
