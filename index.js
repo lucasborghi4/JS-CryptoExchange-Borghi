@@ -123,6 +123,7 @@ function seguirTransaccionando () {
         verificarTransaccion();
 
         monto = monto - transaccion;
+        monto = monto.toFixed(2);
 
         seleccion.push(new Compras (crypto, transaccion));
 
@@ -178,6 +179,7 @@ let transaccion = prompt("¿Qué cantidad de dólares desea comprar de " + crypt
 verificarTransaccion();
 
 monto = monto - transaccion;
+monto = monto.toFixed(2);
 
 seleccion.push(new Compras (crypto, transaccion));
 
