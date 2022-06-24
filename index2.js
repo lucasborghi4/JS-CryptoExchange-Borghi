@@ -204,10 +204,8 @@ function alertaConfirmacion(){
     costoCrypto = montoCrypto.value*buyCrypto.precio
     let dolarizar = montoDivisa.value/buyMonto.precioDolar;
     dolarizar = dolarizar.toFixed(2)
-    console.log(costoCrypto)
-    console.log(dolarizar)
     dolarizar = dolarizar-costoCrypto
-    console.log(dolarizar)
+    dolarizar = dolarizar.toFixed(2)
     alert("Tu compra fue satisfactoria! Compraste " + montoCrypto.value + " de " + buyCrypto.nombre + " y tu saldo restante es de " + dolarizar + " dólares.")
 }
 
