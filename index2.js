@@ -24,7 +24,7 @@ var transaccion;
 var dolarizar;
 var gasto;
 var costoCrypto;
-let saldo= parseInt(0)
+let saldo = 0
 
 
 class Cryptomoneda {
@@ -76,6 +76,9 @@ function inicioCryptosDivisas(){
 function mostrarSaldo(){
 let dameSaldo = localStorage.getItem(saldo)
 saldodiv.setAttribute ("value" , dameSaldo)
+if (dameSaldo == " "){
+    saldodiv.setAttribute ("value" , 0)
+}
 }
 
 function mostrarCryptos() {
