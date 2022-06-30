@@ -259,7 +259,6 @@ function alertaConfirmacion(){
     dameSaldo = dameSaldo.toFixed(2)
     dameSaldo = dameSaldo-costoCrypto
     dameSaldo = dameSaldo.toFixed(2)
-    alert("Tu compra fue satisfactoria! Compraste " + montoCrypto.value + " de " + buyCrypto.nombre + " y tu saldo restante es de " + dameSaldo + " dólares.")
     seleccion.push(new Compras (buyCrypto.nombre, montoCrypto.value, costoCrypto));
     localStorage.setItem(seleccion , seleccion)
     localStorage.getItem(seleccion)
