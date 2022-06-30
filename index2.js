@@ -11,6 +11,11 @@ let confirmaCompra = document.getElementById("confirmarCompra")
 let mensajeDivisa = document.getElementById("mensajeDivisa")
 let mensajeMoneda = document.getElementById("mensajeMoneda")
 let disclaimer = document.getElementById("disclaimer")
+let saldodiv = document.getElementById("saldo")
+let reiniciarSaldo = document.getElementById("reiniciarSaldo")
+let borrarHistorial = document.getElementById("borrarHistorial")
+let borrarTodo = document.getElementById("borrarTodo")
+let historial = document.getElementById("historial")
 var moneda;
 var maximoMoneda;
 var monto;
@@ -19,6 +24,7 @@ var transaccion;
 var dolarizar;
 var gasto;
 var costoCrypto;
+let saldo = 0
 
 
 class Cryptomoneda {
@@ -40,8 +46,9 @@ class Divisas  {
 }
 
 class Compras {
-    constructor(nombreCrypto, precioTrans){
+    constructor(nombreCrypto, cantidadCrypto, precioTrans){
         this.nombreCrypto = nombreCrypto
+        this.cantidadCrypto = cantidadCrypto
         this.precioTrans = precioTrans
     }
 }
@@ -66,18 +73,54 @@ function inicioCryptosDivisas(){
     }   
 }
 
+function mostrarSaldo(){
+let dameSaldo = localStorage.getItem(saldo)
+saldodiv.setAttribute ("value" , dameSaldo)
+}
+
 function mostrarCryptos() {
     cryptos.forEach((crypto) =>{
     let card = document.createElement('div')
-    card.innerHTML += ` <div class="card" style="width: 18rem;">
-    <h5 class="card-title text-center">${crypto.nombre}</h5>
-    <div class= "container-fluid"> ${crypto.grafico} </div>
-    <div class="card-body d-flex justify-content-center">
-    </div> </div>` 
+    card.setAttribute ("class" , "col-sm-6 d-flex justify-content-center mt-3" )
     createCryptos.append(card)
+    let carta = document.createElement ('div')
+    carta.setAttribute ("class" , "card")
+    carta.setAttribute ("style" , "width: 18rem;")
+    carta.innerHTML = `<h5 class="card-title text-center">${crypto.nombre}</h5>
+    <div class= "container-fluid"> ${crypto.grafico} </div>` 
+    let botonCrypto = document.createElement("button")
+    botonCrypto.setAttribute ("class" , "btn btn-primary mt-2")
+    botonCrypto.setAttribute ("type" , "button")
+    botonCrypto.innerText = ("Compra YA!")
+    card.append(carta)
+    carta.append(botonCrypto)
+
+    botonCrypto.addEventListener("click" , function () {
+        desplegable.value = crypto.nombre
+        const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
+        const buyCrypto = cryptos.find((el) => el.nombre === desplegable.value)
+        let dolarizar = montoDivisa.value/buyMonto.precioDolar;
+        let dameSaldo = localStorage.getItem(saldo)
+        dameSaldo = +dameSaldo + +dolarizar
+        dameSaldo = dameSaldo.toFixed(2)
+        let gasto = dameSaldo/buyCrypto.precio;
+        dolarizar = dolarizar.toFixed(2)
+        gasto = gasto.toFixed(8)
+        if (buyMonto.nombre !== undefined && buyCrypto.nombre !== undefined){
+            disclaimer.innerHTML = `<p class="text-primary"> Tienes ${dameSaldo} dólares para comprar hasta ${gasto} de ${buyCrypto.nombre} </p> ` 
+            montoCrypto.value = ""
+            mensajeCrypto.innerHTML = ` `
+            confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
+        }
+        else{
+            disclaimer.innerHTML =" "
+        }
+    })
 })
 }
 
+
+
 function desplegableCryptos() {
     cryptos.forEach((crypto) =>{
         let desple = document.createElement('option')
@@ -86,14 +129,6 @@ function desplegableCryptos() {
     })
 }
 
-function desplegableCryptos() {
-    cryptos.forEach((crypto) =>{
-        let desple = document.createElement('option')
-        desple.innerHTML += ` ${crypto.nombre} ` 
-        desplegable.append(desple)
-    })
-    desplegable.onchange = () => console.log(desplegable.value)
-}
 
 function desplegableDivisas() {
     monedas.forEach((moneda) =>{
@@ -103,79 +138,87 @@ function desplegableDivisas() {
     })
     desplegable2.onchange = () => {console.log(desplegable2.value)
     const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
-    let mensajitoMoneda = document.createElement('div')
     if (buyMonto === undefined){
-        let mensajitoMoneda = document.createElement('div')
-        mensajeMoneda.innerText = " "
-        mensajitoMoneda.innerHTML += `<p class="text-danger"> Selecciona una moneda primero </p> ` 
-        mensajeMoneda.append(mensajitoMoneda)
+        mensajeMoneda.innerHTML += `<p class="text-danger"> Selecciona una moneda primero </p> ` 
+        montoDivisa.value = ""
     }
     else{
     mensajeMoneda.innerText = " "
-    mensajeDivisa.innerText = " "
-    montoDivisa.value = " ";
-    let mensajitoDivisa = document.createElement('div')
-    mensajeDivisa.innerText = " "
-    mensajitoDivisa.innerHTML += `<p class="text-success"> Elegiste ${buyMonto.nombre} recuerda que debe ser un número dentro del límite especificado entre  ${buyMonto.minimo} y ${buyMonto.maximo} ${buyMonto.nombrePlural} </p> ` 
-    mensajeDivisa.append(mensajitoDivisa)
-    }
+    mensajeDivisa.innerHTML = ` `
+    montoDivisa.value = ""
+    montoCrypto.value = ""
+    mensajeCrypto.innerHTML = ` `
+    disclaimer.innerHTML = " "
+    mensajeDivisa.innerHTML += `<p class="text-success"> Elegiste ${buyMonto.nombre} recuerda que debe ser un número dentro del límite especificado entre ${buyMonto.minimo} y ${buyMonto.maximo} ${buyMonto.nombrePlural} </p> ` 
+    confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
+}
     }
 }
 
 function definirMonto() {
     montoDivisa.onchange = () => { console.log(montoDivisa.value)
     const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
-    console.log(buyMonto)
-    let mensajitoDivisa = document.createElement('div')
+    const buyCrypto = cryptos.find((el) => el.nombre === desplegable.value)
     if (buyMonto === undefined){
-        mensajeDivisa.innerText = " "
-        mensajitoDivisa.innerHTML += `<p class="text-danger"> Primero selecciona una moneda </p> ` 
-        mensajeDivisa.append(mensajitoDivisa)
+        mensajeDivisa.innerHTML = `<p class="text-danger"> Primero selecciona una moneda </p> ` 
         monto = "nook"
     }
 
     if (buyMonto !== undefined){
-    if ((montoDivisa.value === ''|| isNaN(montoDivisa.value) && (buyMonto.nombre == desplegable2.value))|| ((buyMonto.nombre == desplegable2.value) && (montoDivisa.value < buyMonto.minimo))|| ((buyMonto.nombre == desplegable2.value) && (montoDivisa.value > buyMonto.maximo))){
-        mensajeDivisa.innerText = " "
-        mensajitoDivisa.innerHTML += `<p class="text-danger"> No es un monto válido, recuerda que debe serun número dentro del límite especificado entre  ${buyMonto.minimo} y ${buyMonto.maximo} ${buyMonto.nombrePlural} </p> ` 
-        mensajeDivisa.append(mensajitoDivisa)
-        monto = "nook"
-    }
+        if ((montoDivisa.value === ''|| isNaN(montoDivisa.value) && (buyMonto.nombre == desplegable2.value))|| ((buyMonto.nombre == desplegable2.value) && (montoDivisa.value < buyMonto.minimo))|| ((buyMonto.nombre == desplegable2.value) && (montoDivisa.value > buyMonto.maximo))){
+            mensajeDivisa.innerText = " "
+            mensajeDivisa.innerHTML = `<p class="text-danger"> No es un monto válido, recuerda que debe ser un número dentro del límite especificado entre  ${buyMonto.minimo} y ${buyMonto.maximo} ${buyMonto.nombrePlural} </p> ` 
+            disclaimer.innerHTML = ` `
+            monto = "nook"
+        }
     else{
-        mensajeDivisa.innerText = " "
+        if (buyCrypto == undefined && buyMonto.nombre == desplegable2.value && montoDivisa.value > buyMonto.minimo || buyCrypto == undefined && buyMonto.nombre == desplegable2.value && montoDivisa.value < buyMonto.maximo){
+            mensajeDivisa.innerHTML = ` `
+            monto = "ok"
+            montoCrypto.value = ""
+            mensajeCrypto.innerHTML = ` `
+            disclaimer.innerHTML = ` `
+            confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
+        }
+        else{
+        let dameSaldo = localStorage.getItem(saldo)
+        let dolarizar = montoDivisa.value/buyMonto.precioDolar;
+        dameSaldo = +dameSaldo + +dolarizar
+        let gasto = dolarizar/buyCrypto.precio;
+        dameSaldo = dameSaldo.toFixed(2)
+        gasto = gasto.toFixed(8)
+        mensajeDivisa.innerHTML = ` `
         monto = "ok"
-    }
+        montoCrypto.value = ""
+        mensajeCrypto.innerHTML = ` `
+        disclaimer.innerHTML = `<p class="text-primary"> Tienes ${dameSaldo} dólares para comprar hasta ${gasto} de ${buyCrypto.nombre} </p> ` 
+        confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
+        }}
 }}}
 
 function definirCrypto() {
     montoCrypto.onchange = () => { console.log(montoCrypto.value)
     const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
     const buyCrypto = cryptos.find((el) => el.nombre === desplegable.value)
-    let mensajitoCrypto = document.createElement('div')
-    let dolarizar = montoDivisa.value/buyMonto.precioDolar;
-    let gasto = dolarizar/buyCrypto.precio;
-    dolarizar = dolarizar.toFixed(2)
-    gasto = gasto.toFixed(8)
     if (buyMonto == undefined || buyCrypto == undefined || monto != "ok" ){
-        mensajeCrypto.innerText = " "
-        mensajitoCrypto.innerHTML += `<p class="text-danger"> Primero debes seleccionar una Crypto, una moneda y monto </p> ` 
-        mensajeCrypto.append(mensajitoCrypto)
+        mensajeCrypto.innerHTML = `<p class="text-danger"> Primero debes seleccionar una Crypto, una moneda y monto </p> ` 
         transaccion = "nook"
     }
+    let dolarizar = montoDivisa.value/buyMonto.precioDolar;
+    let dameSaldo = localStorage.getItem(saldo)
+    dameSaldo = +dameSaldo + +dolarizar
+    dameSaldo = dameSaldo.toFixed(2)
+    let gasto = dameSaldo/buyCrypto.precio;
+    dolarizar = dolarizar.toFixed(2)
+    gasto = gasto.toFixed(8)
     if (buyMonto !== undefined && montoCrypto.value > gasto){
-        mensajeCrypto.innerText = " "
-        mensajitoCrypto.innerHTML += `<p class="text-danger"> Te pasaste del límite </p> ` 
-        mensajeCrypto.append(mensajitoCrypto)
+        mensajeCrypto.innerHTML = `<p class="text-danger"> Te pasaste del límite </p> ` 
+        confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
         transaccion = "nook"
     }
     if (buyMonto !== undefined && montoCrypto.value <= gasto){
-        mensajeCrypto.innerText = " "
-        mensajitoCrypto.innerHTML += `<p class="text-success"> Confirma tu compra </p> ` 
-        mensajeCrypto.append(mensajitoCrypto) 
-        transaccion = "ok"
-        let botonCompra = document.createElement("div")
-        botonCompra.innerHTML += `<button type="button" onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
-        confirmaCompra.append(botonCompra) 
+        mensajeCrypto.innerHTML = `<p class="text-success"> Confirma tu compra </p> ` 
+        confirmaCompra.innerHTML = `<button type="button" onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
     }
     }
 }
@@ -185,14 +228,17 @@ function seleccionadorCrypto(){
     const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
     const buyCrypto = cryptos.find((el) => el.nombre === desplegable.value)
     let dolarizar = montoDivisa.value/buyMonto.precioDolar;
-    let gasto = dolarizar/buyCrypto.precio;
+    let dameSaldo = localStorage.getItem(saldo)
+    dameSaldo = +dameSaldo + +dolarizar
+    dameSaldo = dameSaldo.toFixed(2)
+    let gasto = dameSaldo/buyCrypto.precio;
     dolarizar = dolarizar.toFixed(2)
     gasto = gasto.toFixed(8)
-        if (buyMonto.nombre !== undefined && buyCrypto.nombre !== undefined){
-            let alerta = document.createElement("div")
-            disclaimer.innerText = " "
-            alerta.innerHTML += `<p class="text-primary"> Tienes ${dolarizar} dólares para comprar hasta ${gasto} de ${buyCrypto.nombre} </p> ` 
-            disclaimer.append(alerta)
+        if (buyMonto.nombre !== undefined && buyCrypto.nombre !== undefined && (monto = "ok") && (montoDivisa.value > buyMonto.minimo) && (montoDivisa.value < buyMonto.maximo)){
+            disclaimer.innerHTML = `<p class="text-primary"> Tienes ${dameSaldo} dólares para comprar hasta ${gasto} de ${buyCrypto.nombre} </p> ` 
+            montoCrypto.value = ""
+            mensajeCrypto.innerHTML = ` `
+            confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
         }
     }
 }
@@ -202,15 +248,58 @@ function alertaConfirmacion(){
     const buyCrypto = cryptos.find((el) => el.nombre === desplegable.value)
     const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
     costoCrypto = montoCrypto.value*buyCrypto.precio
+    costoCrypto = costoCrypto.toFixed(2)
     let dolarizar = montoDivisa.value/buyMonto.precioDolar;
     dolarizar = dolarizar.toFixed(2)
-    dolarizar = dolarizar-costoCrypto
-    dolarizar = dolarizar.toFixed(2)
-    alert("Tu compra fue satisfactoria! Compraste " + montoCrypto.value + " de " + buyCrypto.nombre + " y tu saldo restante es de " + dolarizar + " dólares.")
+    let dameSaldo = localStorage.getItem(saldo)
+    dameSaldo = +dameSaldo + +dolarizar
+    dameSaldo = dameSaldo.toFixed(2)
+    dameSaldo = dameSaldo-costoCrypto
+    dameSaldo = dameSaldo.toFixed(2)
+    alert("Tu compra fue satisfactoria! Compraste " + montoCrypto.value + " de " + buyCrypto.nombre + " y tu saldo restante es de " + dameSaldo + " dólares.")
+    seleccion.push(new Compras (buyCrypto.nombre, montoCrypto.value, costoCrypto));
+    localStorage.setItem(seleccion , seleccion)
+    localStorage.getItem(seleccion)
+    let historia = document.createElement('div')
+    historia.innerHTML = ""
+    for (const compras of seleccion){
+    historia.innerHTML = `Compraste ${compras.nombreCrypto} de ${compras.cantidadCrypto} por ${compras.precioTrans} dolares`
+    historial.append(historia) }
+    localStorage.setItem(saldo , dameSaldo)
+    saldodiv.setAttribute ("value" , dameSaldo)
+    mensajeDivisa.innerHTML = ` `
+    montoCrypto.value = ""
+    mensajeCrypto.innerHTML = ` `
+    disclaimer.innerHTML = ` `
+    desplegable.value = "Seleccioná tu Criptomoneda"
+    desplegable2.value = "Elegí tu moneda"
+    montoDivisa.value = ""
+    confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
+}
+
+function reinicioSaldo(){
+    reiniciarSaldo.onclick = () => {
+    localStorage.setItem(saldo , 0)
+    saldodiv.setAttribute ("value" , saldo)
+    }
+}
+
+function borradoHistorial(){
+    borrarHistorial.onclick = () => {
+    historial.innerHTML = ""
+    }
+}
+
+function borradoTodo(){
+    borrarTodo.onclick = () => {
+        localStorage.setItem(saldo , 0)
+        saldodiv.setAttribute ("value" , saldo)
+        localStorage.setItem(seleccion , 0)
+        }
 }
 
 
-
+mostrarSaldo()
 inicioCryptosDivisas();
 mostrarCryptos();
 desplegableCryptos();
@@ -218,3 +307,6 @@ desplegableDivisas();
 definirMonto();
 definirCrypto();
 seleccionadorCrypto();
+reinicioSaldo();
+borradoHistorial();
+borradoTodo();
