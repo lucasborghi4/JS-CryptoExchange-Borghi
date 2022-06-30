@@ -76,7 +76,7 @@ function inicioCryptosDivisas(){
 function mostrarSaldo(){
 let dameSaldo = localStorage.getItem(saldo)
 saldodiv.setAttribute ("value" , dameSaldo)
-if (dameSaldo == " "){
+if (dameSaldo == " " || saldo == 0 || isNaN(saldo)){
     saldodiv.setAttribute ("value" , 0)
 }
 }
