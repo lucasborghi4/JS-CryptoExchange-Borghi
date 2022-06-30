@@ -24,7 +24,7 @@ var transaccion;
 var dolarizar;
 var gasto;
 var costoCrypto;
-let saldo = 0
+let saldo="0"
 
 
 class Cryptomoneda {
