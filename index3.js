@@ -193,18 +193,17 @@ function definirMonto() {
             confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
         }
         else{
-        let dameSaldo = localStorage.getItem('saldo')
+        let saldoMentira = localStorage.getItem('saldo')
         let dolarizar = montoDivisa.value/buyMonto.precioDolar;
-        dameSaldo = +dameSaldo + +dolarizar
-        let gasto = dameSaldo/buyCrypto.precio;
-        dameSaldo = dameSaldo.toFixed(2)
-        localStorage.setItem('saldo' , dameSaldo)
+        saldoMentira = +saldoMentira + +dolarizar
+        let gasto = saldoMentira/buyCrypto.precio;
+        saldoMentira = saldoMentira.toFixed(2)
         gasto = gasto.toFixed(8)
         mensajeDivisa.innerHTML = ` `
         monto = "ok"
         montoCrypto.value = ""
         mensajeCrypto.innerHTML = ` `
-        disclaimer.innerHTML = `<p class="text-primary"> Tienes ${dameSaldo} dólares para comprar hasta ${gasto} de ${buyCrypto.nombre} </p> ` 
+        disclaimer.innerHTML = `<p class="text-primary"> Tienes ${saldoMentira} dólares para comprar hasta ${gasto} de ${buyCrypto.nombre} </p> ` 
         document.getElementById("montoCrypto").disabled = false;
         confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
         }}
