@@ -324,12 +324,14 @@ function reinicioSaldo(){
     reiniciarSaldo.onclick = () => {
     localStorage.setItem('saldo' , 0)
     saldodiv.setAttribute ("value" , saldo)
+    muestraSaldo.innerText = `Saldo: $0.00 USD`
     }
 }
 
 function borradoHistorial(){
     borrarHistorial.onclick = () => {
     historial.innerHTML = ""
+    localStorage.setItem('historia' , "")
     }
 }
 
@@ -339,6 +341,7 @@ function borradoTodo(){
         saldodiv.setAttribute ("value" , saldo)
         historial.innerHTML = ""
         localStorage.setItem('historia' , "")
+        muestraSaldo.innerText = `Saldo: $0.00 USD`
         }
 }
 
