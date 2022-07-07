@@ -77,7 +77,11 @@ function inicioCryptosDivisas(){
 
 function mostrarSaldo(){
 let darSaldo = localStorage.getItem('saldo')
-saldodiv.setAttribute ("value" , darSaldo)
+if (darSaldo !== null){
+saldodiv.setAttribute ("value" , darSaldo)}
+else{
+    saldodiv.setAttribute ("value" , 0)
+}
 try {
     let storedSeleccion = JSON.parse(localStorage.getItem('historia'))
     console.log ("!" + storedSeleccion);
