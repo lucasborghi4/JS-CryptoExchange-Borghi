@@ -1,6 +1,7 @@
 const cryptos = [];
 const monedas = [];
 const seleccion = [];
+let muestraSaldo = document.getElementById("muestraSaldo")
 let createCryptos = document.getElementById("createCryptos")
 let cuestionario = document.getElementById("cuestionario")
 let desplegable = document.getElementById("desplegable")
@@ -78,9 +79,11 @@ function inicioCryptosDivisas(){
 function mostrarSaldo(){
 let darSaldo = localStorage.getItem('saldo')
 if (darSaldo !== null){
-saldodiv.setAttribute ("value" , darSaldo)}
+saldodiv.setAttribute ("value" , darSaldo)
+muestraSaldo.innerText = `Saldo: $${darSaldo} USD`}
 else{
     saldodiv.setAttribute ("value" , 0)
+    muestraSaldo.innerText = `Saldo: $0.00 USD`
 }
 try {
     let storedSeleccion = JSON.parse(localStorage.getItem('historia'))
@@ -285,6 +288,7 @@ function alertaConfirmacion(){
             montoDivisa.value = ""
             confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
             document.getElementById("cuestionario").style="display:none";
+            muestraSaldo.innerText = `Saldo: $${dameSaldo} USD`
             swal("Compra aprobada", "Realizaste una compra", "success");
         } 
         else {
