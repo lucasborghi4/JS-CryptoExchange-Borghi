@@ -292,6 +292,7 @@ function alertaConfirmacion(){
             disclaimer.innerHTML = ` `
             desplegable2.value = "Elegí tu moneda"
             montoDivisa.value = ""
+            document.getElementById("montoCrypto").disabled = true;
             confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
             document.getElementById("cuestionario").style="display:none";
             muestraSaldo.innerText = `Saldo: $${dameSaldo} USD`
@@ -302,6 +303,7 @@ function alertaConfirmacion(){
             desplegable2.value = "Elegí tu moneda"
             montoCrypto.value = ""
             montoDivisa.value = ""
+            document.getElementById("montoCrypto").disabled = true;
             mensajeMoneda.innerText = " "
             mensajeDivisa.innerHTML = ` `
             mensajeCrypto.innerHTML = ` `
@@ -322,6 +324,7 @@ function cancelamientoCompra() {
     mensajeDivisa.innerHTML = ` `
     mensajeCrypto.innerHTML = ` `
     disclaimer.innerHTML = " "
+    document.getElementById("montoCrypto").disabled = true;
     confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn btn-primary"> Confirmar Compra </button> `
     document.getElementById("cuestionario").style="display:none";
 }
