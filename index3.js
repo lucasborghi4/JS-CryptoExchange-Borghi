@@ -223,8 +223,8 @@ function definirMonto() {
                 .then ((respuestita) => respuestita.json() )
                 .then ((data) => {
                 console.log(data.result)
+                let dolarizar = +data.result
         let dameSaldo = localStorage.getItem('saldo')
-        let dolarizar = +data.result
         dameSaldo = +dameSaldo + +dolarizar
         let buscaPrecios = arrayCryptos.join(',')
         try{
@@ -266,8 +266,20 @@ function definirCrypto() {
         mensajeCrypto.innerHTML = `<p class="text-danger"> Primero debes seleccionar una moneda y monto </p> ` 
         transaccion = "nook"
     }
-    
-    let dolarizar = montoDivisa.value/buyMonto.precioDolar;
+    var myHeaders = new Headers();
+            myHeaders.append("apikey", "kHYS5ZJSGH64zQxbqViwySzdRD04RUJD");
+            
+            var requestOptions = {
+              method: 'GET',
+              redirect: 'follow',
+              headers: myHeaders
+            };
+            try{
+                fetch("https://api.apilayer.com/currency_data/convert?to=USD&from="+buyMonto.codigo+"&amount="+montoDivisa.value, requestOptions)
+                .then ((respuestita) => respuestita.json() )
+                .then ((data) => {
+                console.log(data.result)
+                let dolarizar = +data.result
     let dameSaldo = localStorage.getItem('saldo')
     dameSaldo = +dameSaldo + +dolarizar
     dameSaldo = dameSaldo.toFixed(2)
@@ -284,8 +296,9 @@ function definirCrypto() {
         confirmaCompra.innerHTML = `<button type="button" onclick="alertaConfirmacion()" class="btn boton"> Confirmar Compra </button> `
         localStorage.setItem('saldillo' , dameSaldo)
     }
-    }
-}
+    })}
+    catch(e){}
+}}
 
 
 function alertaConfirmacion(){
