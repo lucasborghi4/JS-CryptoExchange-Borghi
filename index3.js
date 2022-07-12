@@ -60,7 +60,7 @@ class Compras {
     }
 }
 
-function funciona(){
+function showDivisa(){
     monedas.push(new Divisas ("Dólar", 1, 10000, 1, "dolares","USD"));
     for (const producto of monedas){
         if (producto.nombre == "Dólar"){
@@ -83,12 +83,14 @@ function funciona(){
         console.log(monedas)
         desplegableDivisas();
         }).catch(function(err) {
-        console.log("returns just the 1st failure ...");
+            limiteDolares = 1200000;
+            minimoDolar = 127;
+            monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolar , "pesos", "ARS"))
         console.log(err);
         })}}
 }
 
-funciona();
+
 
 function inicioCryptosDivisas(){
     
@@ -542,7 +544,7 @@ function borradoTodo(){
 
 
 
-
+showDivisa();
 mostrarSaldo();
 inicioCryptosDivisas();
 mostrarCryptos();
