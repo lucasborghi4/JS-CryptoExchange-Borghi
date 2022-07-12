@@ -114,7 +114,7 @@ if (darSaldo !== null){
 saldodiv.setAttribute ("value" , "$" + darSaldo + " USD")
 muestraSaldo.innerText = `Saldo: $${darSaldo} USD`}
 else{
-    saldodiv.setAttribute ("value" , "$" + darSaldo + " USD")
+    saldodiv.setAttribute ("value" , "$" + +darSaldo + " USD")
     muestraSaldo.innerText = `Saldo: $0.00 USD`
 }
 try {
@@ -539,14 +539,6 @@ function borradoTodo(){
         }
 }
 
-function convertorDivisa(){
-try{
-    fetch("https://api.exchangerate.host/convert?from=ARS&to=USD&amount=20000")
-    .then ((respuestita) => respuestita.json() )
-    .then ((data) => {
-    console.log(data)
-    console.log(data.result)})}
-catch(e){}}
 
 
 
