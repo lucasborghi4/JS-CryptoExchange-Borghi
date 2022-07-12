@@ -64,7 +64,6 @@ class Compras {
 
 function inicioCryptosDivisas(){
     monedas.push(new Divisas ("Dólar", 1, 10000, 1, "dolares","USD"));
-    try{
         for (const producto of monedas){
         if (producto.nombre == "Dólar"){
         fetch("https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.maximo)
@@ -78,13 +77,8 @@ function inicioCryptosDivisas(){
         .then ((limiteMinimo) => {
             let minimoDolares = limiteMinimo.result.toFixed(2)
             localStorage.setItem('minimoDolares' , minimoDolares)
-    })})}}}
-    catch(e){
-        let limiteDolares = 1200000
-        let minimoDolar = 127
-        localStorage.setItem('limiteDolares' , limiteDolares)
-        localStorage.setItem('minimoDolares' , minimoDolar)
-    }
+    })})}}
+  
     let limiteDolares = localStorage.getItem('limiteDolares')
     let minimoDolares = localStorage.getItem('minimoDolares')
     monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolares , "pesos", "ARS"))
