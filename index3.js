@@ -64,6 +64,7 @@ class Compras {
 
 function inicioCryptosDivisas(){
     monedas.push(new Divisas ("Dólar", 1, 10000, 1, "dolares","USD"));
+    try{
         for (const producto of monedas){
         if (producto.nombre == "Dólar"){
         fetch("https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.maximo)
@@ -77,8 +78,13 @@ function inicioCryptosDivisas(){
         .then ((limiteMinimo) => {
             let minimoDolares = limiteMinimo.result.toFixed(2)
             localStorage.setItem('minimoDolares' , minimoDolares)
-    })})}}
-  
+    })})}}}
+    catch(e){
+        let limiteDolares = 1200000
+        let minimoDolar = 127
+        localStorage.setItem('limiteDolares' , limiteDolares)
+        localStorage.setItem('minimoDolares' , minimoDolar)
+    }
     let limiteDolares = localStorage.getItem('limiteDolares')
     let minimoDolares = localStorage.getItem('minimoDolares')
     monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolares , "pesos", "ARS"))
@@ -99,30 +105,6 @@ function inicioCryptosDivisas(){
     for (const producto of cryptos){
         arrayCryptos.push(producto.nombre)
     }   
-
-    monedas.forEach((moneda) =>{
-        console.log("estas son mis monedas" + JSON.stringify(monedas))
-        let desple2 = document.createElement('option')
-        desple2.innerHTML += ` ${moneda.nombre} ` 
-        desplegable2.append(desple2)
-    })
-    desplegable2.onchange = () => {console.log(desplegable2.value)
-    const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
-    if (buyMonto === undefined){
-        mensajeMoneda.innerHTML += `<p class="text-danger"> Selecciona una moneda primero </p> ` 
-        montoDivisa.value = ""
-    }
-    else{
-    mensajeMoneda.innerText = " "
-    mensajeDivisa.innerHTML = ` `
-    montoDivisa.value = ""
-    montoCrypto.value = ""
-    mensajeCrypto.innerHTML = ` `
-    disclaimer.innerHTML = " "
-    mensajeDivisa.innerHTML += `<p class="text-success"> Elegiste ${buyMonto.nombre} recuerda que debe ser un número dentro del límite especificado entre ${buyMonto.minimo} y ${buyMonto.maximo} ${buyMonto.nombrePlural} </p> ` 
-    confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn boton"> Confirmar Compra </button> `
-}
-    }
     
 }
 
@@ -203,6 +185,31 @@ function mostrarCryptos() {
 }
 
 
+function desplegableDivisas() {
+    monedas.forEach((moneda) =>{
+        console.log("estas son mis monedas" + JSON.stringify(monedas))
+        let desple2 = document.createElement('option')
+        desple2.innerHTML += ` ${moneda.nombre} ` 
+        desplegable2.append(desple2)
+    })
+    desplegable2.onchange = () => {console.log(desplegable2.value)
+    const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
+    if (buyMonto === undefined){
+        mensajeMoneda.innerHTML += `<p class="text-danger"> Selecciona una moneda primero </p> ` 
+        montoDivisa.value = ""
+    }
+    else{
+    mensajeMoneda.innerText = " "
+    mensajeDivisa.innerHTML = ` `
+    montoDivisa.value = ""
+    montoCrypto.value = ""
+    mensajeCrypto.innerHTML = ` `
+    disclaimer.innerHTML = " "
+    mensajeDivisa.innerHTML += `<p class="text-success"> Elegiste ${buyMonto.nombre} recuerda que debe ser un número dentro del límite especificado entre ${buyMonto.minimo} y ${buyMonto.maximo} ${buyMonto.nombrePlural} </p> ` 
+    confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn boton"> Confirmar Compra </button> `
+}
+    }
+}
 
 function definirMonto() {
     montoDivisa.onchange = () => { console.log(montoDivisa.value)
@@ -538,6 +545,7 @@ function borradoTodo(){
 mostrarSaldo();
 inicioCryptosDivisas();
 mostrarCryptos();
+desplegableDivisas();
 definirMonto();
 definirCrypto();
 reinicioSaldo();
