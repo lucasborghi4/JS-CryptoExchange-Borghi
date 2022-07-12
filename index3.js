@@ -105,6 +105,30 @@ function inicioCryptosDivisas(){
     for (const producto of cryptos){
         arrayCryptos.push(producto.nombre)
     }   
+
+    monedas.forEach((moneda) =>{
+        console.log("estas son mis monedas" + JSON.stringify(monedas))
+        let desple2 = document.createElement('option')
+        desple2.innerHTML += ` ${moneda.nombre} ` 
+        desplegable2.append(desple2)
+    })
+    desplegable2.onchange = () => {console.log(desplegable2.value)
+    const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
+    if (buyMonto === undefined){
+        mensajeMoneda.innerHTML += `<p class="text-danger"> Selecciona una moneda primero </p> ` 
+        montoDivisa.value = ""
+    }
+    else{
+    mensajeMoneda.innerText = " "
+    mensajeDivisa.innerHTML = ` `
+    montoDivisa.value = ""
+    montoCrypto.value = ""
+    mensajeCrypto.innerHTML = ` `
+    disclaimer.innerHTML = " "
+    mensajeDivisa.innerHTML += `<p class="text-success"> Elegiste ${buyMonto.nombre} recuerda que debe ser un número dentro del límite especificado entre ${buyMonto.minimo} y ${buyMonto.maximo} ${buyMonto.nombrePlural} </p> ` 
+    confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn boton"> Confirmar Compra </button> `
+}
+    }
     
 }
 
@@ -185,31 +209,6 @@ function mostrarCryptos() {
 }
 
 
-function desplegableDivisas() {
-    monedas.forEach((moneda) =>{
-        console.log("estas son mis monedas" + JSON.stringify(monedas))
-        let desple2 = document.createElement('option')
-        desple2.innerHTML += ` ${moneda.nombre} ` 
-        desplegable2.append(desple2)
-    })
-    desplegable2.onchange = () => {console.log(desplegable2.value)
-    const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
-    if (buyMonto === undefined){
-        mensajeMoneda.innerHTML += `<p class="text-danger"> Selecciona una moneda primero </p> ` 
-        montoDivisa.value = ""
-    }
-    else{
-    mensajeMoneda.innerText = " "
-    mensajeDivisa.innerHTML = ` `
-    montoDivisa.value = ""
-    montoCrypto.value = ""
-    mensajeCrypto.innerHTML = ` `
-    disclaimer.innerHTML = " "
-    mensajeDivisa.innerHTML += `<p class="text-success"> Elegiste ${buyMonto.nombre} recuerda que debe ser un número dentro del límite especificado entre ${buyMonto.minimo} y ${buyMonto.maximo} ${buyMonto.nombrePlural} </p> ` 
-    confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn boton"> Confirmar Compra </button> `
-}
-    }
-}
 
 function definirMonto() {
     montoDivisa.onchange = () => { console.log(montoDivisa.value)
@@ -545,7 +544,6 @@ function borradoTodo(){
 mostrarSaldo();
 inicioCryptosDivisas();
 mostrarCryptos();
-desplegableDivisas();
 definirMonto();
 definirCrypto();
 reinicioSaldo();
