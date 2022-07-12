@@ -29,6 +29,8 @@ var transaccion;
 var dolarizar;
 var gasto;
 var costoCrypto;
+var limiteDolares;
+var minimoDolar;
 let saldo = 0
 
 
@@ -61,11 +63,38 @@ class Compras {
 // Declaro Cryptos y divisas disponibles y guardo nombres de divisas y cryptos
 
 function inicioCryptosDivisas(){
+    monedas.push(new Divisas ("Dólar", 1, 10000, 1, "dolares","USD"));
+    try{
+        for (const producto of monedas){
+        if (producto.nombre == "Dólar"){
+        fetch("https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.maximo)
+        .then ((elmaximo) => elmaximo.json() )    
+        .then ((limiteMaximo) => {
+            let limiteDolares = limiteMaximo.result.toFixed(2)
+            localStorage.setItem('limiteDolares' , limiteDolares)
+        console.log ("el limite en pesos es de " + limiteDolares)
+        fetch("https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.minimo)
+        .then ((elminimo) => elminimo.json() )    
+        .then ((limiteMinimo) => {
+            let minimoDolares = limiteMinimo.result.toFixed(2)
+            localStorage.setItem('minimoDolares' , minimoDolares)
+    })})}}}
+    catch(e){
+        let limiteDolares = 1200000
+        let minimoDolar = 127
+        localStorage.setItem('limiteDolares' , limiteDolares)
+        localStorage.setItem('minimoDolares' , minimoDolar)
+    }
+    let limiteDolares = localStorage.getItem('limiteDolares')
+    let minimoDolares = localStorage.getItem('minimoDolares')
+    monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolares , "pesos", "ARS"))
+
+    console.log(monedas)
+    
     cryptos.push(new Cryptomoneda ("bitcoin", ` <div style="width: auto; height:220px; background-color: #1D2330; overflow:hidden; box-sizing: border-box; border: 1px solid #282E3B; border-radius: 4px; text-align: right; line-height:14px; block-size:220px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #262B38;padding:1px;padding: 0px; margin: 0px;"><div style="height:200px; padding:0px; margin:0px; width: 100%;"><iframe src="https://widget.coinlib.io/widget?type=single_v2&theme=dark&coin_id=859&pref_coin_id=1505" width="250" height="196px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;line-height:14px;"></iframe></div><div style="color: #626B7F; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;"><a href="https://coinlib.io" target="_blank" style="font-weight: 500; color: #626B7F; text-decoration:none; font-size:11px">Cryptocurrency Prices</a>&nbsp;by Coinlib</div></div>` ));
     cryptos.push(new Cryptomoneda ("ethereum", ` <div style="width: auto; height:220px; background-color: #1D2330; overflow:hidden; box-sizing: border-box; border: 1px solid #282E3B; border-radius: 4px; text-align: right; line-height:14px; block-size:220px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #262B38;padding:1px;padding: 0px; margin: 0px;"><div style="height:200px; padding:0px; margin:0px; width: 100%;"><iframe src="https://widget.coinlib.io/widget?type=single_v2&theme=dark&coin_id=145&pref_coin_id=1505" width="250" height="196px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;line-height:14px;"></iframe></div><div style="color: #626B7F; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;"><a href="https://coinlib.io" target="_blank" style="font-weight: 500; color: #626B7F; text-decoration:none; font-size:11px">Cryptocurrency Prices</a>&nbsp;by Coinlib</div></div>` ));
 
-    monedas.push(new Divisas ("Peso", 121, 36500, 121, "pesos", "ARS"));
-    monedas.push(new Divisas ("Dólar", 1, 300, 1, "dolares","USD"));
+
 
     arrayNombres = [];
     for (const producto of monedas){
@@ -76,6 +105,7 @@ function inicioCryptosDivisas(){
     for (const producto of cryptos){
         arrayCryptos.push(producto.nombre)
     }   
+    
 }
 
 function mostrarSaldo(){
@@ -157,6 +187,7 @@ function mostrarCryptos() {
 
 function desplegableDivisas() {
     monedas.forEach((moneda) =>{
+        console.log("estas son mis monedas" + JSON.stringify(monedas))
         let desple2 = document.createElement('option')
         desple2.innerHTML += ` ${moneda.nombre} ` 
         desplegable2.append(desple2)
@@ -210,19 +241,11 @@ function definirMonto() {
             confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn boton"> Confirmar Compra </button> `
         }
         else{
-            var myHeaders = new Headers();
-            myHeaders.append("apikey", "kHYS5ZJSGH64zQxbqViwySzdRD04RUJD");
-            
-            var requestOptions = {
-              method: 'GET',
-              redirect: 'follow',
-              headers: myHeaders
-            };
             try{
-                fetch("https://api.apilayer.com/currency_data/convert?to=USD&from="+buyMonto.codigo+"&amount="+montoDivisa.value, requestOptions)
+                fetch("https://api.exchangerate.host/convert?from="+buyMonto.codigo+"&to=USD&amount="+montoDivisa.value)
                 .then ((respuestita) => respuestita.json() )
                 .then ((data) => {
-                console.log(data.result)
+                console.log("log de segundo fetch" + data.result)
                 let dolarizar = +data.result
         let dameSaldo = localStorage.getItem('saldo')
         dameSaldo = +dameSaldo + +dolarizar
@@ -254,7 +277,39 @@ function definirMonto() {
         catch(e){
             
         }})}
-        catch(e){}
+        catch(e){
+            let dolarizar = montoDivisa.value / buyMonto.precioDolar
+            let dameSaldo = localStorage.getItem('saldo')
+        dameSaldo = +dameSaldo + +dolarizar
+        let buscaPrecios = arrayCryptos.join(',')
+        try{
+        fetch("https://api.coingecko.com/api/v3/simple/price?ids="+buscaPrecios+"&vs_currencies=usd")
+        .then ( (resp) => resp.json() )
+        .then ((data) => {
+                var keyVariable = buyCrypto.nombre
+                precioCryptoActual = +data[keyVariable].usd
+                console.log("precioact" + precioCryptoActual)
+                let gasto = dameSaldo/precioCryptoActual;
+                console.log("el gasto" + gasto)
+                console.log("cual es mi saldo" + dameSaldo)
+                dameSaldo = dameSaldo.toFixed(2)
+                localStorage.setItem('saldillo' , dameSaldo)
+                gasto = gasto.toFixed(8)
+                mensajeDivisa.innerHTML = ` `
+                monto = "ok"
+                montoCrypto.value = ""
+                mensajeCrypto.innerHTML = ` `
+                let nombreMayuscula = buyCrypto.nombre.charAt(0).toUpperCase() + buyCrypto.nombre.slice(1);
+                disclaimer.innerHTML = `<p class="text-primary"> Tienes ${dameSaldo} dólares para comprar hasta ${gasto} de ${nombreMayuscula} </p> ` 
+                document.getElementById("montoCrypto").disabled = false;
+                montoCrypto.value = gasto
+                confirmaCompra.innerHTML = `<button type="button" onclick="alertaConfirmacion()" class="btn boton"> Confirmar Compra </button> `
+                mensajeCrypto.innerHTML = `<p class="text-success"> Confirma tu compra </p> `     
+            })}
+        catch(e){
+            
+        }
+        }
         }}
 }}}
 
@@ -275,7 +330,7 @@ function definirCrypto() {
               headers: myHeaders
             };
             try{
-                fetch("https://api.apilayer.com/currency_data/convert?to=USD&from="+buyMonto.codigo+"&amount="+montoDivisa.value, requestOptions)
+                fetch("https://api.exchangerate.host/convert?from="+buyMonto.codigo+"&to=USD&amount="+montoDivisa.value)
                 .then ((respuestita) => respuestita.json() )
                 .then ((data) => {
                 console.log(data.result)
@@ -297,7 +352,26 @@ function definirCrypto() {
         localStorage.setItem('saldillo' , dameSaldo)
     }
     })}
-    catch(e){}
+    catch(e){
+        let dolarizar = montoDivisa.value / buyMonto.precioDolar
+        let dameSaldo = localStorage.getItem('saldo')
+    dameSaldo = +dameSaldo + +dolarizar
+    dameSaldo = dameSaldo.toFixed(2)
+    let gasto = dameSaldo/precioCryptoActual;
+    dolarizar = dolarizar.toFixed(2)
+    gasto = gasto.toFixed(8)
+    if (buyMonto !== undefined && (montoCrypto.value > gasto || montoCrypto.value <= 0 )){
+        mensajeCrypto.innerHTML = `<p class="text-danger"> Te pasaste del límite </p> ` 
+        confirmaCompra.innerHTML = `<button type="button" disabled onclick="alertaConfirmacion()" class="btn boton"> Confirmar Compra </button> `
+        transaccion = "nook"
+    }
+    if (buyMonto !== undefined && montoCrypto.value <= gasto && montoCrypto.value > 0){
+        mensajeCrypto.innerHTML = `<p class="text-success"> Confirma tu compra </p> ` 
+        confirmaCompra.innerHTML = `<button type="button" onclick="alertaConfirmacion()" class="btn boton"> Confirmar Compra </button> `
+        localStorage.setItem('saldillo' , dameSaldo)
+    }
+
+    }
 }}
 
 
@@ -466,18 +540,11 @@ function borradoTodo(){
 }
 
 function convertorDivisa(){
-    var myHeaders = new Headers();
-myHeaders.append("apikey", "kHYS5ZJSGH64zQxbqViwySzdRD04RUJD");
-
-var requestOptions = {
-  method: 'GET',
-  redirect: 'follow',
-  headers: myHeaders
-};
 try{
-    fetch("https://api.apilayer.com/currency_data/convert?to=USD&from=USD&amount=100", requestOptions)
+    fetch("https://api.exchangerate.host/convert?from=ARS&to=USD&amount=20000")
     .then ((respuestita) => respuestita.json() )
     .then ((data) => {
+    console.log(data)
     console.log(data.result)})}
 catch(e){}}
 
