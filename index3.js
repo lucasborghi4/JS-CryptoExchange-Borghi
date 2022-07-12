@@ -60,36 +60,37 @@ class Compras {
     }
 }
 
-// Declaro Cryptos y divisas disponibles y guardo nombres de divisas y cryptos
+function funciona(){
+    monedas.push(new Divisas ("Dólar", 1, 10000, 1, "dolares","USD"));
+    for (const producto of monedas){
+        if (producto.nombre == "Dólar"){
+        var urls = [
+            "https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.maximo,
+            "https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.minimo,
+        ];
+        var requests = urls.map(function(url){
+            return fetch(url)
+            .then(function(response) {
+          return response.json();
+            })  
+          });
+
+        Promise.all(requests)
+        .then((results) => {
+        limiteDolares = results[0].result.toFixed(2);
+        minimoDolar = results[1].result.toFixed(2);
+        monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolar , "pesos", "ARS"))
+        console.log(monedas)
+        desplegableDivisas();
+        }).catch(function(err) {
+        console.log("returns just the 1st failure ...");
+        console.log(err);
+        })}}
+}
+
+funciona();
 
 function inicioCryptosDivisas(){
-    monedas.push(new Divisas ("Dólar", 1, 10000, 1, "dolares","USD"));
-    try{
-        for (const producto of monedas){
-        if (producto.nombre == "Dólar"){
-        fetch("https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.maximo)
-        .then ((elmaximo) => elmaximo.json() )    
-        .then ((limiteMaximo) => {
-            let limiteDolares = limiteMaximo.result.toFixed(2)
-            localStorage.setItem('limiteDolares' , limiteDolares)
-        console.log ("el limite en pesos es de " + limiteDolares)
-        fetch("https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.minimo)
-        .then ((elminimo) => elminimo.json() )    
-        .then ((limiteMinimo) => {
-            let minimoDolares = limiteMinimo.result.toFixed(2)
-            localStorage.setItem('minimoDolares' , minimoDolares)
-    })})}}}
-    catch(e){
-        let limiteDolares = 1200000
-        let minimoDolar = 127
-        localStorage.setItem('limiteDolares' , limiteDolares)
-        localStorage.setItem('minimoDolares' , minimoDolar)
-    }
-    let limiteDolares = localStorage.getItem('limiteDolares')
-    let minimoDolares = localStorage.getItem('minimoDolares')
-    monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolares , "pesos", "ARS"))
-
-    console.log(monedas)
     
     cryptos.push(new Cryptomoneda ("bitcoin", ` <div style="width: auto; height:220px; background-color: #1D2330; overflow:hidden; box-sizing: border-box; border: 1px solid #282E3B; border-radius: 4px; text-align: right; line-height:14px; block-size:220px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #262B38;padding:1px;padding: 0px; margin: 0px;"><div style="height:200px; padding:0px; margin:0px; width: 100%;"><iframe src="https://widget.coinlib.io/widget?type=single_v2&theme=dark&coin_id=859&pref_coin_id=1505" width="250" height="196px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;line-height:14px;"></iframe></div><div style="color: #626B7F; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;"><a href="https://coinlib.io" target="_blank" style="font-weight: 500; color: #626B7F; text-decoration:none; font-size:11px">Cryptocurrency Prices</a>&nbsp;by Coinlib</div></div>` ));
     cryptos.push(new Cryptomoneda ("ethereum", ` <div style="width: auto; height:220px; background-color: #1D2330; overflow:hidden; box-sizing: border-box; border: 1px solid #282E3B; border-radius: 4px; text-align: right; line-height:14px; block-size:220px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #262B38;padding:1px;padding: 0px; margin: 0px;"><div style="height:200px; padding:0px; margin:0px; width: 100%;"><iframe src="https://widget.coinlib.io/widget?type=single_v2&theme=dark&coin_id=145&pref_coin_id=1505" width="250" height="196px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;line-height:14px;"></iframe></div><div style="color: #626B7F; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;"><a href="https://coinlib.io" target="_blank" style="font-weight: 500; color: #626B7F; text-decoration:none; font-size:11px">Cryptocurrency Prices</a>&nbsp;by Coinlib</div></div>` ));
@@ -545,7 +546,6 @@ function borradoTodo(){
 mostrarSaldo();
 inicioCryptosDivisas();
 mostrarCryptos();
-desplegableDivisas();
 definirMonto();
 definirCrypto();
 reinicioSaldo();
