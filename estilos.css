@@ -20,7 +20,7 @@
 }
 
 @import url(https://db.onlinewebfonts.com/c/24a69b0d49de39034663d837a985f04b?family=BenguiatITCW01-BoldCn);
-@font-face {font-family: "BenguiatITCW01-BoldCn"; src: url("https://db.onlinewebfonts.com/t/24a69b0d49de39034663d837a985f04b.eot"); src: url("https://db.onlinewebfonts.com/t/24a69b0d49de39034663d837a985f04b.eot?#iefix") format("embedded-opentype"), url("https://db.onlinewebfonts.com/t/24a69b0d49de39034663d837a985f04b.woff2") format("woff2"), url("https://db.onlinewebfonts.com/t/24a69b0d49de39034663d837a985f04b.woff") format("woff"), url("https://db.onlinewebfonts.com/t/24a69b0d49de39034663d837a985f04b.ttf") format("truetype"), url("https://db.onlinewebfonts.com/t/24a69b0d49de39034663d837a985f04b.svg#BenguiatITCW01-BoldCn") format("svg"); }
+@font-face {font-family: "BenguiatITCW01-BoldCn"; src: url("https://db.onlinewebfonts.com/t/24a69b0d49de39034663d837a985f04b.eot"); src: url("https://db.onlinewebfonts.com/t/24a69b0d49de39034663d837a985f04b.eot?#iefix") format("embedded-opentype"), url("https://db.onlinewebfonts.com/t/24a69b0d49de39034663d837a985f04b.svg#BenguiatITCW01-BoldCn") format("svg"); }
 
 body {
   background-image: url("./fondo.jpg");
