@@ -63,9 +63,30 @@ class Compras {
 //Genera Divisas que voy a utilizar
 function pushearDivisas(){
     monedas.push(new Divisas ("Dólar", 1, 10000, 1, "dolares","USD"));
-    monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolar , "pesos", "ARS"))
-    }  
+    for (const producto of monedas){
+        if (producto.nombre == "Dólar"){
+            var urls = [
+            "https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.maximo,
+            "https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.minimo,];
+            var requests = urls.map(function(url){
+                return fetch(url)
+                .then(function(response) {
+                    return response.json();
+                })  
+            });
 
+            Promise.all(requests)
+            .then((results) => {
+                limiteDolares = results[0].result.toFixed(2);
+                minimoDolar = results[1].result.toFixed(2);
+                monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolar , "pesos", "ARS"))
+                desplegableDivisas();
+            }).catch(function(err) {
+                limiteDolares = 1200000;
+                minimoDolar = 127;
+                monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolar , "pesos", "ARS"))
+    })  }   }
+}
 
 
 //Genera Cryptos que voy a utilizar
@@ -95,6 +116,10 @@ function mostrarSaldo(){
         saldodiv.setAttribute ("value" , "$" + +darSaldo + " USD")
         muestraSaldo.innerText = `Saldo: $0.00 USD`
     }
+}
+
+//Muestra los últimos 5 movimientos siendo el de más arriba el último
+function mostrarHistoria(){
     try {
         let storedSeleccion = JSON.parse(localStorage.getItem('historia'))
         storedSeleccion = storedSeleccion.slice(-5).reverse()
@@ -531,6 +556,7 @@ function borradoTodo(){
 pushearDivisas();
 pushearCryptos();
 mostrarSaldo();
+mostrarHistoria();
 mostrarCryptos();
 definirMonto();
 definirCrypto();
