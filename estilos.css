@@ -1,8 +1,8 @@
 #cuestionario {
   overflow: hidden; 
-    height: 0;
-    opacity: 0;
-    transition: height 0ms 400ms, opacity 400ms 0ms;
+  height: 0;
+  opacity: 0;
+  transition: height 0ms 400ms, opacity 400ms 0ms;
 }
 
 .barraNav{
@@ -40,11 +40,11 @@ body {
   font-weight: 800;
   color: #1c0502;
   text-shadow: -0.05rem -0.05rem 1px #ed2b12,
-    0.05rem -0.05rem 1px #ed2b12,
-    -0.05rem 0.05rem 1px #ed2b12,
-    0.05rem 0.05rem 1px #ed2b12,
-    0 0 15px #630100,
-    0 0 20px #450100;
+  0.05rem -0.05rem 1px #ed2b12,
+  -0.05rem 0.05rem 1px #ed2b12,
+  0.05rem 0.05rem 1px #ed2b12,
+  0 0 15px #630100,
+  0 0 20px #450100;
   letter-spacing: -2px;
 }
 
@@ -55,9 +55,9 @@ body {
 
 .st-bound {
   box-shadow: -0.05rem -0.05rem 2px #ed2b12,
-    0.05rem -0.05rem 2px #ed2b12,
-    -0.05rem 0.05rem 2px #ed2b12,
-    0.05rem 0.05rem 2px #ed2b12;
+  0.05rem -0.05rem 2px #ed2b12,
+  -0.05rem 0.05rem 2px #ed2b12,
+  0.05rem 0.05rem 2px #ed2b12;
   height: 5px;
 }
 
@@ -267,7 +267,8 @@ html,body {
 
   .st {
     width: auto;
-    height: auto;}
+    height: auto;
+  }
 
 
 }
@@ -308,13 +309,13 @@ html,body {
     margin: 0px;
   }
 
-    .letraSaldo{
-      font-family: 'BenguiatITCW01-BoldCn';
-      text-transform: uppercase;
-      color: white;
-      font-size: 0.8rem;
-      margin: 0px;
-    }
+  .letraSaldo{
+    font-family: 'BenguiatITCW01-BoldCn';
+    text-transform: uppercase;
+    color: white;
+    font-size: 0.8rem;
+    margin: 0px;
+  }
 
 }
 
@@ -354,12 +355,12 @@ html,body {
     margin: 0px;
   }
 
-    .letraSaldo{
-      font-family: 'BenguiatITCW01-BoldCn';
-      text-transform: uppercase;
-      color: white;
-      font-size: 0.7rem;
-      margin: 0px;
-    }
+  .letraSaldo{
+    font-family: 'BenguiatITCW01-BoldCn';
+    text-transform: uppercase;
+    color: white;
+    font-size: 0.7rem;
+    margin: 0px;
+  }
 
 }
