@@ -60,30 +60,30 @@ class Compras {
     }
 }
 
+
 //Genera Divisas que voy a utilizar
 function pushearDivisas(){
     monedas.push(new Divisas ("Dólar", 1, 10000, 1, "dolares","USD"));
     for (const producto of monedas){
         if (producto.nombre == "Dólar"){
             var urls = [
-            "https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.maximo,
-            "https://api.exchangerate.host/convert?from=USD&to=ARS&amount="+producto.minimo,];
+                'https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/ars.json'];
             var requests = urls.map(function(url){
                 return fetch(url)
-                .then(function(response) {
-                    return response.json();
-                })  
+                .then(response => response.json())
+                .then(response => {
+                    limiteDolares = (response.ars * producto.maximo).toFixed(2);
+                    minimoDolar = (response.ars * producto.minimo).toFixed(2);
+                })
             });
 
             Promise.all(requests)
-            .then((results) => {
-                limiteDolares = results[0].result.toFixed(2);
-                minimoDolar = results[1].result.toFixed(2);
+            .then(function(pushear){
                 monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolar , "pesos", "ARS"))
                 desplegableDivisas();
             }).catch(function(err) {
-                limiteDolares = 1200000;
-                minimoDolar = 127;
+                limiteDolares = 1300000;
+                minimoDolar = 130;
                 monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolar , "pesos", "ARS"))
     })  }   }
 }
@@ -550,7 +550,6 @@ function borradoTodo(){
         muestraSaldo.innerText = `Saldo: $0.00 USD`
     }
 }
-
 
 
 pushearDivisas();
