@@ -80,13 +80,11 @@ function pushearDivisas(){
                 limiteDolares = results[0].result.toFixed(2);
                 minimoDolar = results[1].result.toFixed(2);
                 monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolar , "pesos", "ARS"))
-                console.log(monedas)
                 desplegableDivisas();
             }).catch(function(err) {
                 limiteDolares = 1200000;
                 minimoDolar = 127;
                 monedas.push(new Divisas ("Peso", 121, +limiteDolares, +minimoDolar , "pesos", "ARS"))
-                console.log(err);
     })  }   }
 }
 
@@ -118,14 +116,9 @@ function mostrarSaldo(){
         saldodiv.setAttribute ("value" , "$" + +darSaldo + " USD")
         muestraSaldo.innerText = `Saldo: $0.00 USD`
     }
-}
-
-//Muestra los últimos 5 movimientos siendo el de más arriba el último
-function mostrarHistoria(){
     try {
         let storedSeleccion = JSON.parse(localStorage.getItem('historia'))
         storedSeleccion = storedSeleccion.slice(-5).reverse()
-        console.log ("!" + storedSeleccion);
         historial.innerHTML = ""
         for (const compras of storedSeleccion){
         let nombreMayuscula = compras.nombreCrypto.charAt(0).toUpperCase() + compras.nombreCrypto.slice(1);
@@ -135,7 +128,6 @@ function mostrarHistoria(){
     }
     catch(e) {
         let storedSeleccion = [];
-        console.log ("$$" + storedSeleccion);
         let historia = document.createElement('div')
         historial.innerHTML = ""
         for (const compras of storedSeleccion){
@@ -199,7 +191,7 @@ function desplegableDivisas() {
         desplegable2.append(desple2)
     })
 
-    desplegable2.onchange = () => {console.log(desplegable2.value)
+    desplegable2.onchange = () => {
         const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
         if (buyMonto === undefined){
             mensajeMoneda.innerHTML += `<p class="text-danger"> Selecciona una moneda primero </p> ` 
@@ -225,7 +217,7 @@ function desplegableDivisas() {
 
 //lógica para diferentes interacciones con la cantidad de dinero a invertir, si se eligió moneda antes y si cumple con los límites de cada divisa
 function definirMonto() {
-    montoDivisa.onchange = () => { console.log(montoDivisa.value)
+    montoDivisa.onchange = () => { 
         const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
         const buyCrypto = cryptos.find((el) => el.nombre === (desplegable.value.toLowerCase()))
         if (buyMonto === undefined){
@@ -259,7 +251,6 @@ function definirMonto() {
                         fetch("https://api.exchangerate.host/convert?from="+buyMonto.codigo+"&to=USD&amount="+montoDivisa.value)
                         .then ((respuestita) => respuestita.json() )
                         .then ((data) => {
-                            console.log("log de segundo fetch" + data.result)
                             let dolarizar = +data.result
                             let dameSaldo = localStorage.getItem('saldo')
                             dameSaldo = +dameSaldo + +dolarizar
@@ -270,10 +261,7 @@ function definirMonto() {
                                 .then ((data) => { 
                                     var keyVariable = buyCrypto.nombre
                                     precioCryptoActual = +data[keyVariable].usd
-                                    console.log("precioact" + precioCryptoActual)
                                     let gasto = dameSaldo/precioCryptoActual;
-                                    console.log("el gasto" + gasto)
-                                    console.log("cual es mi saldo" + dameSaldo)
                                     dameSaldo = dameSaldo.toFixed(2)
                                     localStorage.setItem('saldillo' , dameSaldo)
                                     gasto = gasto.toFixed(8)
@@ -304,10 +292,7 @@ function definirMonto() {
                             .then ((data) => {
                                 var keyVariable = buyCrypto.nombre
                                 precioCryptoActual = +data[keyVariable].usd
-                                console.log("precioact" + precioCryptoActual)
                                 let gasto = dameSaldo/precioCryptoActual;
-                                console.log("el gasto" + gasto)
-                                console.log("cual es mi saldo" + dameSaldo)
                                 dameSaldo = dameSaldo.toFixed(2)
                                 localStorage.setItem('saldillo' , dameSaldo)
                                 gasto = gasto.toFixed(8)
@@ -334,7 +319,7 @@ function definirMonto() {
 
 //lógicas para mostrar mensaje de cuánto es posible comprar de crypto y tomar límites
 function definirCrypto() {
-    montoCrypto.onchange = () => {console.log(montoCrypto.value)
+    montoCrypto.onchange = () => {
         const buyMonto = monedas.find((el) => el.nombre === desplegable2.value)
         const buyCrypto = cryptos.find((el) => el.nombre === desplegable.value.toLowerCase())
         if (buyMonto == undefined || buyCrypto == undefined || monto != "ok" ){
@@ -353,7 +338,6 @@ function definirCrypto() {
             fetch("https://api.exchangerate.host/convert?from="+buyMonto.codigo+"&to=USD&amount="+montoDivisa.value)
             .then ((respuestita) => respuestita.json() )
             .then ((data) => {
-                console.log(data.result)
                 let dolarizar = +data.result
                 let dameSaldo = localStorage.getItem('saldo')
                 dameSaldo = +dameSaldo + +dolarizar
@@ -435,7 +419,6 @@ function alertaConfirmacion(){
             try {
                 let storedSeleccion = JSON.parse(localStorage.getItem('historia'))
                 storedSeleccion = storedSeleccion.slice(-5).reverse()
-                console.log ("!" + storedSeleccion);
                 historial.innerHTML = ""
                 for (const compras of storedSeleccion){
                 let nombreMayuscula = compras.nombreCrypto.charAt(0).toUpperCase() + compras.nombreCrypto.slice(1);
@@ -445,7 +428,6 @@ function alertaConfirmacion(){
             }
             catch(e) {
                 let storedSeleccion = [];
-                console.log ("$$" + storedSeleccion);
                 let historia = document.createElement('div')
                 historial.innerHTML = ""
                 for (const compras of storedSeleccion){
@@ -570,7 +552,6 @@ function borradoTodo(){
 pushearDivisas();
 pushearCryptos();
 mostrarSaldo();
-mostrarHistoria();
 mostrarCryptos();
 definirMonto();
 definirCrypto();
